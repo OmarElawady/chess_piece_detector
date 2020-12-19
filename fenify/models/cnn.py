@@ -132,6 +132,7 @@ class CNNModel(Model):
         model_data_path = os.path.join(models_dir, str(latest_model))
         if latest_model != 0:
             self.model = tf.keras.models.load_model(os.path.join(model_data_path, "model.hdf5"))
+            self.model.compile(optimizer='adam', loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True), metrics=["accuracy"])
 
     def metadata(self):
         stringlist = []
