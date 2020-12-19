@@ -11,6 +11,11 @@ def fen_to_piece_list(fen):
     assert len(piece_list) == 64
     return piece_list
 
+def flatten(ls):
+    res = []
+    for l in ls:
+        res += l
+    return res
 
 def piece_list_to_fen(piece_list):
     fen = ""

@@ -1,12 +1,7 @@
 from fenify.models.basic import MnistModel
 from fenify.prepare.generate import generate_board_sample
 from tqdm import tqdm
-
-def flatten(ls):
-    res = []
-    for l in ls:
-        res += l
-    return res
+from fenify.helpers.utils import flatten
 
 train_length = 6
 test_length = 2
