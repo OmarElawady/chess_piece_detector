@@ -27,21 +27,31 @@ class CNNModel(Model):
                         tf.keras.layers.Dropout(0.2),
                         tf.keras.layers.Dense(13),
                     ])
-        self._init_tensorboard()
         self.model.compile(optimizer='adam', loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True), metrics=["accuracy"])
         self.name = "cnn"
+        self.models_dir = os.path.join("models_data", self.name)
+        self._init_model_dir()
+        self._init_tensorboard()
         self.x_train, self.y_train = [], []
         self.x_test, self.y_test = [], []
         self._acc = None
         self._confusion = None
-        self.model_tmp_file = str(uuid.uuid4()) + ".hdf5"
-        self.model_tmp_path = os.path.join("tmp", self.model_tmp_file)
+
+    def _init_model_dir(self):
+        os.makedirs(self.models_dir, exist_ok=True)
+        all_models = os.listdir(self.models_dir)
+        latest_model = 0
+        for m in all_models:
+            if int(m) > latest_model:
+                latest_model = int(m)
+        latest_model += 1
+        self.model_data_path = os.path.join(self.models_dir, str(latest_model))
+        os.makedirs(self.model_data_path)
+        self.model_path = os.path.join(self.model_data_path, "model.hdf5")
 
     def _init_tensorboard(self):
-        self.tmp_log_dir = tempfile.mkdtemp()
-    
-    def _save_tensorboard_snapshot(self, model_data_path):
-        copytree(self.tmp_log_dir, f"{model_data_path}/logs")
+        self.log_dir = os.path.join(self.model_data_path, 'logs')
+        os.makedirs(self.log_dir, exist_ok=True)
 
     def _convert_samples_to_set(self, pieces_samples):
         pieces = 'rbnkqpRBNKQP'
@@ -58,12 +68,12 @@ class CNNModel(Model):
         self.x_train, self.y_train = self._convert_samples_to_set(pieces_samples)
         
     def train(self, epochs):
-        cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=self.model_tmp_path,
+        cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=self.model_path,
                                                         save_weights_only=False,
                                                         save_best_only=True,
                                                         monitor='loss',
                                                         verbose=1)
-        tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=self.tmp_log_dir)
+        tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=self.log_dir)
         self.model.fit(self.x_train, self.y_train, epochs=epochs, callbacks=[cp_callback, tensorboard_callback])
     
     def evaluate(self, pieces_samples):
@@ -96,30 +106,18 @@ class CNNModel(Model):
             if truth[i] != 13 and abs(truth[i] - pred[i]) == 6:
                 cnt += 1
         return cnt / tot
+    
 
     def save_snapshot(self):
-        models_dir = os.path.join("models_data", self.name)
-        os.makedirs(models_dir, exist_ok=True)
-        all_models = os.listdir(models_dir)
-        latest_model = 0
-        for m in all_models:
-            if int(m) > latest_model:
-                latest_model = int(m)
-        latest_model += 1
-        model_data_path = os.path.join(models_dir, str(latest_model))
-        os.makedirs(model_data_path)
-        self._save_tensorboard_snapshot(model_data_path)
-        model_path = os.path.join(model_data_path, "model.hdf5")
-        copyfile(self.model_tmp_path, model_path)
         metrics = {
             "accuracy": self.accuracy(),
             "miscolored": self.miscolored(),
             "confusiont matrix": self.confusion_matrix()
         }
-        with open(os.path.join(model_data_path, 'metrics.json'), 'w+') as f:
+        with open(os.path.join(self.model_data_path, 'metrics.json'), 'w+') as f:
             f.write(json.dumps(metrics, indent=2))
 
-        with open(os.path.join(model_data_path, 'metadata.json'), 'w+') as f:
+        with open(os.path.join(self.model_data_path, 'metadata.json'), 'w+') as f:
             f.write(json.dumps(self.metadata(), indent=2))
 
 
@@ -129,11 +127,10 @@ class CNNModel(Model):
         all_models = os.listdir(models_dir)
         latest_model = 0
         for m in all_models:
-            if int(m) > latest_model:
+            if int(m) > latest_model and os.path.isfile(os.path.join(models_dir, str(latest_model), 'model.hdf5')):
                 latest_model = int(m)
         model_data_path = os.path.join(models_dir, str(latest_model))
         if latest_model != 0:
-            import pdb; pdb.set_trace()
             self.model = tf.keras.models.load_model(os.path.join(model_data_path, "model.hdf5"))
 
     def metadata(self):
