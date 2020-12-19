@@ -13,18 +13,19 @@ import json
 import tempfile
 
 class CNNModel(Model):
+    DROPOUT = .03
     def __init__(self):
         self.model = tf.keras.models.Sequential([
                         tf.keras.layers.Conv2D(input_shape=(28, 28, 3), filters=32, kernel_size=3, activation="relu"),
-                        tf.keras.layers.Dropout(0.2),
+                        tf.keras.layers.Dropout(self.DROPOUT),
                         tf.keras.layers.Conv2D(input_shape=(28, 28, 3), filters=32, kernel_size=3, activation="relu"),
-                        tf.keras.layers.Dropout(0.2),
+                        tf.keras.layers.Dropout(self.DROPOUT),
                         tf.keras.layers.Conv2D(input_shape=(28, 28, 3), filters=32, kernel_size=3, activation="relu"),
-                        tf.keras.layers.Dropout(0.2),
+                        tf.keras.layers.Dropout(self.DROPOUT),
                         tf.keras.layers.Flatten(),
-                        tf.keras.layers.Dropout(0.2),
+                        tf.keras.layers.Dropout(self.DROPOUT),
                         tf.keras.layers.Dense(128, activation="relu"),
-                        tf.keras.layers.Dropout(0.2),
+                        tf.keras.layers.Dropout(self.DROPOUT),
                         tf.keras.layers.Dense(13),
                     ])
         self.model.compile(optimizer='adam', loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True), metrics=["accuracy"])
