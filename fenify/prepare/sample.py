@@ -6,7 +6,7 @@ from .config import MOUSE_POINTER_IMG
 
 
 class BoardSample:
-    def __init__(self, fen, image):
+    def __init__(self, image, fen, pieces_type=None, board_type=None, pieces_distortions=None, board_distortions=None):
         """
         Input output pair
         
@@ -16,9 +16,16 @@ class BoardSample:
         """
         self.fen = fen
         self.image = image
-
-class DetailedBoardSample(BoardSample):
-    def __init__(self, fen, image, pieces_distortions, board_distortions):
-        super().__init__(fen, image)
+        self.pieces_type = pieces_type
+        self.board_type = board_type
         self.pieces_distortions = pieces_distortions
-        self.board_distorions = board_distortions
+        self.board_distortions = board_distortions
+
+class PieceSample:
+    def __init__(self, image, piece_type, pieces_type=None, board_type=None, square_color=None, distortions=None):
+        self.image = image
+        self.piece_type = piece_type
+        self.pieces_type = pieces_type
+        self.board_type = board_type
+        self.square_color = square_color
+        self.distortions = None

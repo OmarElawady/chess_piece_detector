@@ -6,6 +6,8 @@ import random
 from glob import glob
 from .piece_distortion import RandomTransiterPieceDistorter, RandomZoomPieceDistorter, ImageOverlay, LichessOverlayDistorter, RedOverlayDistorter, YellowOverlayDistorter, CircleDistorter
 from .baord_distortion import MousePointerBoardDistorter, ArrowDistorter, BishopArrowDistorter, RookArrowDistorter, KnightArrowDistorter
+from .sample import BoardSample
+from fenify.helpers.utils import piece_list_to_fen, piece_pairs_to_list
 
 
 def random_piece():
@@ -144,7 +146,6 @@ def overlay_pieces(board_image, overlays):
         posy = int(posy)
         for absolute_image in ov.absolute_images:
             board_image = overlay_image(board_image, absolute_image, absx, absy)
-            print(absolute_image)
         board_image = overlay_image(board_image, ov.image, posx, posy)
     return board_image
 
@@ -166,7 +167,8 @@ def generate_board_sample():
                 pieces_distortions[i].append(dist())
     pieces_overlay_images = []
     pieces_type = random.choice(list_pieces_type())
-    board_image =  get_board_image(random.choice(list_board_types()))
+    board_type = random.choice(list_board_types())
+    board_image =  get_board_image(board_type)
     for piece in board_pieces:
         if piece is None:
             pieces_overlay_images.append(piece)
@@ -174,8 +176,9 @@ def generate_board_sample():
             piece_image = get_piece_image(pieces_type, piece[0], piece[1])
             ov = ImageOverlay(0, 0, piece_image)
             pieces_overlay_images.append(ov)
-    print(board_pieces)
     distorted_pieces_overlay_images = apply_pieces_distortions(pieces_overlay_images, pieces_distortions)
     overlay_pieces(board_image, distorted_pieces_overlay_images)
     board_image = apply_board_distortions(board_image, board_distortions)
-    return board_image
+    fen = piece_list_to_fen(piece_pairs_to_list(board_pieces))
+    sample = BoardSample(board_image, fen, pieces_type, board_type, pieces_distortions, board_distortions)
+    return sample
