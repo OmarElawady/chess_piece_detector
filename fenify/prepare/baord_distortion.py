@@ -18,7 +18,7 @@ class BoardDistorter:
         return board_image
 
 class MousePointerBoardDistorter(BoardDistorter):
-    DENSITY = 30
+    DENSITY = 20
     def __init__(self):
         self.posx = random.random()
         self.posy = random.random()
@@ -33,7 +33,7 @@ class MousePointerBoardDistorter(BoardDistorter):
         return board_image
 
 class ArrowDistorter(BoardDistorter):
-    DENSITY = 5
+    DENSITY = 3
     def __init__(self):
         self.x1, self.y1 = (0.5 + random.randint(0, 7)) / 8, (0.5 + random.randint(0, 7)) / 8
         self.x2, self.y2 = (0.5 + random.randint(0, 7)) / 8, (0.5 + random.randint(0, 7)) / 8
@@ -49,7 +49,7 @@ class ArrowDistorter(BoardDistorter):
         return board_image
 
 class BishopArrowDistorter(BoardDistorter):
-    DENSITY = 5
+    DENSITY = 3
     def __init__(self):
         self.x1, self.y1 = random.randint(0, 7), random.randint(0, 7)
         cnt = 0
@@ -83,7 +83,7 @@ class BishopArrowDistorter(BoardDistorter):
         return board_image
 
 class RookArrowDistorter(BoardDistorter):
-    DENSITY = 5
+    DENSITY = 3
     def __init__(self):
         self.x1, self.y1 = random.randint(0, 7), random.randint(0, 7)
         cnt = 0
@@ -117,7 +117,7 @@ class RookArrowDistorter(BoardDistorter):
         return board_image
 
 class KnightArrowDistorter(BoardDistorter):
-    DENSITY = 5
+    DENSITY = 3
     def __init__(self):
         self.x1, self.y1 = random.randint(0, 7), random.randint(0, 7)
         cnt = 0

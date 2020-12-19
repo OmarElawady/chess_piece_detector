@@ -5,8 +5,8 @@ from fenify.helpers.utils import flatten
 import random
 random.seed(13)
 
-train_length = 70
-test_length = 30
+train_length = 400
+test_length = 50
 
 model = CNNModel()
 model.load_latest()
