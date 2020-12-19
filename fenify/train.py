@@ -15,6 +15,6 @@ train_samples = flatten(train_samples)
 test_samples = [model.get_samples(generate_board_sample()) for _ in tqdm(range(test_length))]
 test_samples = flatten(test_samples)
 model.add_samples(train_samples)
-model.train(1000)
+model.train(200)
 model.evaluate(test_samples)
 model.save_snapshot()
