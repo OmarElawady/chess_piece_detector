@@ -9,7 +9,7 @@ train_length = 70
 test_length = 30
 
 model = CNNModel()
-# model.load_latest()
+model.load_latest()
 train_samples = [model.get_samples(generate_board_sample()) for _ in tqdm(range(train_length))]
 train_samples = flatten(train_samples)
 test_samples = [model.get_samples(generate_board_sample()) for _ in tqdm(range(test_length))]
