@@ -127,7 +127,7 @@ class CNNModel(Model):
         all_models = os.listdir(models_dir)
         latest_model = 0
         for m in all_models:
-            if int(m) > latest_model and os.path.isfile(os.path.join(models_dir, str(latest_model), 'model.hdf5')):
+            if int(m) > latest_model and os.path.isfile(os.path.join(models_dir, str(m), 'model.hdf5')):
                 latest_model = int(m)
         model_data_path = os.path.join(models_dir, str(latest_model))
         if latest_model != 0:
