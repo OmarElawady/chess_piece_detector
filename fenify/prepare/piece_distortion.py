@@ -5,6 +5,7 @@ import numpy as np
 from .config import CIRCLE
 from fenify.helpers.image import convert_svg_text_to_png
 
+CIRCLE_STROKE_WIDTH_400 = 3.120833396911621
 
 class ImageOverlay:
     def __init__(self, x, y, image):
@@ -90,6 +91,6 @@ class CircleDistorter(PieceDistorter):
     def distort(self, image_overlay):
         l = image_overlay.original_length
         circle_radius = l * 4 / 9
-        png_image = convert_svg_text_to_png(CIRCLE % (0, 0, circle_radius), l, l)
+        png_image = convert_svg_text_to_png(CIRCLE % (CIRCLE_STROKE_WIDTH_400 / 400 * l, 0, 0, circle_radius), l, l)
         image_overlay.absolute_images.append(png_image)
         return image_overlay

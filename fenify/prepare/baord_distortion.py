@@ -5,6 +5,8 @@ import random
 from .config import MOUSE_POINTER_IMG, ARROW_LINE, ARROW_CHESS_LINE
 import cv2
 
+LINE_STROKE_WIDTH_400 = 7.802083492279053
+
 def decision(prob):
     return random.random() < prob
 
@@ -44,7 +46,7 @@ class ArrowDistorter(BoardDistorter):
     
     def distort(self, board_image):
         l = board_image.shape[0]
-        line_image = convert_svg_text_to_png(ARROW_LINE % (self.x1 * l, self.y1 * l, self.x2 * l, self.y2 * l), l, l)
+        line_image = convert_svg_text_to_png(ARROW_LINE % (LINE_STROKE_WIDTH_400 * l / 400, self.x1 * l, self.y1 * l, self.x2 * l, self.y2 * l), l, l)
         board_image = overlay_image(board_image, line_image, 0, 0)
         return board_image
 
@@ -78,7 +80,7 @@ class BishopArrowDistorter(BoardDistorter):
     
     def distort(self, board_image):
         l = board_image.shape[0]
-        line_image = convert_svg_text_to_png(ARROW_CHESS_LINE % (self.x1 * l, self.y1 * l, self.x2 * l, self.y2 * l), l, l)
+        line_image = convert_svg_text_to_png(ARROW_CHESS_LINE % (LINE_STROKE_WIDTH_400 * l / 400, self.x1 * l, self.y1 * l, self.x2 * l, self.y2 * l), l, l)
         board_image = overlay_image(board_image, line_image, 0, 0)
         return board_image
 
@@ -112,7 +114,7 @@ class RookArrowDistorter(BoardDistorter):
     
     def distort(self, board_image):
         l = board_image.shape[0]
-        line_image = convert_svg_text_to_png(ARROW_CHESS_LINE % (self.x1 * l, self.y1 * l, self.x2 * l, self.y2 * l), l, l)
+        line_image = convert_svg_text_to_png(ARROW_CHESS_LINE % (LINE_STROKE_WIDTH_400 * l / 400, self.x1 * l, self.y1 * l, self.x2 * l, self.y2 * l), l, l)
         board_image = overlay_image(board_image, line_image, 0, 0)
         return board_image
 
@@ -153,8 +155,8 @@ class KnightArrowDistorter(BoardDistorter):
     def distort(self, board_image):
 
         l = board_image.shape[0]
-        cv2.line(board_image, (int(l * self.x1 + l / 2), int(l * self.y1 + l / 2)), (int(l * self.linex + l / 2), int(l * self.liney + l / 2)), (0, 168, 255), 19)
+        cv2.line(board_image, (int(l * self.x1 + l / 2), int(l * self.y1 + l / 2)), (int(l * self.linex + l / 2), int(l * self.liney + l / 2)), (0, 168, 255), int(LINE_STROKE_WIDTH_400 * l // 400))
 
-        line_image = convert_svg_text_to_png(ARROW_CHESS_LINE % (self.linex * l, self.liney * l, self.x2 * l, self.y2 * l), l, l)
+        line_image = convert_svg_text_to_png(ARROW_CHESS_LINE % (LINE_STROKE_WIDTH_400 * l / 400, self.linex * l, self.liney * l, self.x2 * l, self.y2 * l), l, l)
         board_image = overlay_image(board_image, line_image, 0, 0)
         return board_image
