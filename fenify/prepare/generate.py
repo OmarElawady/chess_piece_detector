@@ -5,7 +5,7 @@ import os
 import random
 from glob import glob
 from .piece_distortion import RandomTransiterPieceDistorter, RandomZoomPieceDistorter, ImageOverlay, LichessOverlayDistorter, RedOverlayDistorter, YellowOverlayDistorter, CircleDistorter
-from .baord_distortion import MousePointerBoardDistorter, ArrowDistorter, BishopArrowDistorter, RookArrowDistorter, KnightArrowDistorter
+from .baord_distortion import BoardShiftDistorter, MousePointerBoardDistorter, ArrowDistorter, BishopArrowDistorter, RookArrowDistorter, KnightArrowDistorter
 from .sample import BoardSample
 from fenify.helpers.utils import piece_list_to_fen, piece_pairs_to_list
 
@@ -114,8 +114,9 @@ def list_board_types():
 def list_pieces_distortions():
     return [RandomZoomPieceDistorter, RandomTransiterPieceDistorter, LichessOverlayDistorter, RedOverlayDistorter, YellowOverlayDistorter, CircleDistorter]
 
+
 def list_boards_distortions():
-    return [MousePointerBoardDistorter, ArrowDistorter, BishopArrowDistorter, RookArrowDistorter, KnightArrowDistorter]
+    return [BoardShiftDistorter, MousePointerBoardDistorter, ArrowDistorter, BishopArrowDistorter, RookArrowDistorter, KnightArrowDistorter]
 
 def decision(prob):
     return random.random() < prob

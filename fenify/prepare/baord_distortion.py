@@ -4,12 +4,12 @@ from fenify.helpers.image import scale_image, read_image_as_png, overlay_image, 
 import random
 from .config import MOUSE_POINTER_IMG, ARROW_LINE, ARROW_CHESS_LINE
 import cv2
+import numpy as np
 
 LINE_STROKE_WIDTH_400 = 7.802083492279053
 
 def decision(prob):
     return random.random() < prob
-
 
 class BoardDistorter:
     DENSITY = 0
@@ -17,8 +17,21 @@ class BoardDistorter:
         pass
 
     def distort(self, board_image):
+        board_image = board_image
         return board_image
+class BoardShiftDistorter(BoardDistorter):
+    DENSITY = 1
+    def __init__(self):
+        pass
 
+    def distort(self, board_image):
+        l = board_image.shape[0]
+        board_image = np.hstack((board_image, board_image, board_image))
+        board_image = np.vstack((board_image, board_image, board_image))
+        x_base, y_base = l, l
+        offx, offy = (random.random() - .5) * 0.025 * l, (random.random() - .5) * 0.05 * l
+        x, y = int(x_base - offx), int(y_base - offy)
+        return board_image[x: x + l, y: y + l]
 class MousePointerBoardDistorter(BoardDistorter):
     DENSITY = 20
     def __init__(self):
@@ -35,7 +48,7 @@ class MousePointerBoardDistorter(BoardDistorter):
         return board_image
 
 class ArrowDistorter(BoardDistorter):
-    DENSITY = 3
+    DENSITY = 5
     def __init__(self):
         self.x1, self.y1 = (0.5 + random.randint(0, 7)) / 8, (0.5 + random.randint(0, 7)) / 8
         self.x2, self.y2 = (0.5 + random.randint(0, 7)) / 8, (0.5 + random.randint(0, 7)) / 8
@@ -51,7 +64,7 @@ class ArrowDistorter(BoardDistorter):
         return board_image
 
 class BishopArrowDistorter(BoardDistorter):
-    DENSITY = 3
+    DENSITY = 5
     def __init__(self):
         self.x1, self.y1 = random.randint(0, 7), random.randint(0, 7)
         cnt = 0
@@ -85,7 +98,7 @@ class BishopArrowDistorter(BoardDistorter):
         return board_image
 
 class RookArrowDistorter(BoardDistorter):
-    DENSITY = 3
+    DENSITY = 5
     def __init__(self):
         self.x1, self.y1 = random.randint(0, 7), random.randint(0, 7)
         cnt = 0
@@ -119,7 +132,7 @@ class RookArrowDistorter(BoardDistorter):
         return board_image
 
 class KnightArrowDistorter(BoardDistorter):
-    DENSITY = 3
+    DENSITY = 5
     def __init__(self):
         self.x1, self.y1 = random.randint(0, 7), random.randint(0, 7)
         cnt = 0
