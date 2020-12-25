@@ -25,7 +25,7 @@ class PieceDistorter:
 
 class RandomZoomPieceDistorter(PieceDistorter):
     DENSITY = .8
-    def __init__(self, mn=90, mx=110):
+    def __init__(self, mn=96, mx=104):
         super().__init__()
         self.type = "zoom"
         self.zoom = random.uniform(mn, mx) / 100
@@ -35,7 +35,7 @@ class RandomZoomPieceDistorter(PieceDistorter):
         return image_overlay
 
 class RandomTransiterPieceDistorter(PieceDistorter):
-    DENSITY = .8
+    DENSITY = 1
     def __init__(self, percentage=.1):
         super().__init__()
         self.type = "transition"
@@ -60,7 +60,7 @@ class LichessOverlayDistorter(PieceDistorter):
         return image_overlay
 
 class YellowOverlayDistorter(PieceDistorter):
-    DENSITY = .15
+    DENSITY = .1
     def __init__(self):
         self.type = "yellow_overlay"
 
@@ -72,7 +72,7 @@ class YellowOverlayDistorter(PieceDistorter):
         return image_overlay
 
 class RedOverlayDistorter(PieceDistorter):
-    DENSITY = .15
+    DENSITY = .1
     def __init__(self):
         self.type = "red_overlay"
 
@@ -84,7 +84,7 @@ class RedOverlayDistorter(PieceDistorter):
         return image_overlay
 
 class CircleDistorter(PieceDistorter):
-    DENSITY = .15
+    DENSITY = .1
     def __init__(self):
         self.type = "circle"
 
