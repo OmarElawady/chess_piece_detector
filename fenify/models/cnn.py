@@ -22,6 +22,10 @@ class CNNModel(Model):
                         tf.keras.layers.Dropout(self.DROPOUT),
                         tf.keras.layers.Conv2D(input_shape=(28, 28, 3), filters=32, kernel_size=3, activation="relu"),
                         tf.keras.layers.Dropout(self.DROPOUT),
+                        tf.keras.layers.Conv2D(input_shape=(28, 28, 3), filters=32, kernel_size=3, activation="relu"),
+                        tf.keras.layers.Dropout(self.DROPOUT),
+                        tf.keras.layers.Conv2D(input_shape=(28, 28, 3), filters=32, kernel_size=3, activation="relu"),
+                        tf.keras.layers.Dropout(self.DROPOUT),
                         tf.keras.layers.Flatten(),
                         tf.keras.layers.Dropout(self.DROPOUT),
                         tf.keras.layers.Dense(128, activation="relu"),
@@ -74,6 +78,7 @@ class CNNModel(Model):
                                                         save_best_only=True,
                                                         monitor='loss',
                                                         verbose=1)
+        visualize_samples(self.x_train, self.y_train, 64)
         tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=self.log_dir)
         self.model.fit(self.x_train, self.y_train, epochs=epochs, callbacks=[cp_callback, tensorboard_callback])
     
