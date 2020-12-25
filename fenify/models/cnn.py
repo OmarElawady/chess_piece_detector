@@ -13,7 +13,7 @@ import json
 import tempfile
 
 class CNNModel(Model):
-    DROPOUT = .1
+    DROPOUT = .03
     def __init__(self):
         self.model = tf.keras.models.Sequential([
                         tf.keras.layers.Conv2D(input_shape=(28, 28, 3), filters=32, kernel_size=3, activation="relu"),
